@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Sonmart Чат-бот | Тестовый дизайн</title>
+
+    <!-- Google Fonts - Inter как на сайте -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f0f4fa 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Контейнер для демо */
+        .demo-container {
+            width: 100%;
+            max-width: 420px;
+            background: transparent;
+        }
+
+        /* Заголовок демо */
+        .demo-header {
+            text-align: center;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .demo-header h3 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2196e0;
+        }
+
+        .demo-header p {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* ========== ВИДЖЕТ ЧАТА ========== */
+        .chat-widget {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        /* Шапка чата */
+        .chat-header {
+            background: #2196e0;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+
+        .chat-avatar {
+            width: 44px;
+            height: 44px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .chat-title h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .chat-title span {
+            font-size: 12px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Область сообщений */
+        .chat-messages {
+            height: 480px;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Сообщение бота */
+        .message-bot {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .bot-icon {
+            width: 32px;
+            height: 32px;
+            background: #eef2ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .bot-bubble {
+            background: white;
+            border-radius: 18px;
+            border-top-left-radius: 4px;
+            padding: 12px 16px;
+            max-width: 85%;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            font-size: 14px;
+            line-height: 1.45;
+            color: #1e293b;
+        }
+
+        /* Сообщение пользователя */
+        .message-user {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .user-bubble {
+            background: #2196e0;
+            color: white;
+            border-radius: 18px;
+            border-top-right-radius: 4px;
+            padding: 10px 16px;
+            max-width: 85%;
+            font-size: 14px;
+            line-height: 1.45;
+        }
+
+        /* Кнопки выбора (как на сайте) */
+        .choice-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .choice-btn {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .choice-btn:hover {
+            background: #e2e8f0;
+            border-color: #2196e0;
+        }
+
+        /* Карточка товара (как на сайте sonmart) */
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-top: 8px;
+            border: 1px solid #eef2ff;
+        }
+
+        .product-img {
+            background: #f1f5f9;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .product-info {
+            padding: 12px;
+        }
+
+        .product-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #0f172a;
+        }
+
+        .product-params {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-weight: 700;
+            font-size: 18px;
+            color: #2196e0;
+            margin-bottom: 10px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #2196e0;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Панель ввода */
+        .chat-input {
+            padding: 12px 16px;
+            background: white;
+            border-top: 1px solid #eef2ff;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+        }
+
+        .chat-input input:focus {
+            border-color: #2196e0;
+        }
+
+        .send-btn {
+            background: #2196e0;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* Индикатор печати */
+        .typing {
+            display: flex;
+            gap: 4px;
+            padding: 8px 12px;
+        }
+
+        .typing span {
+            width: 6px;
+            height: 6px;
+            background: #94a3b8;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-6px); }
+        }
+
+        /* Скроллбар */
+        .chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #e2e8f0;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #2196e0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="demo-container">
+    <div class="demo-header">
+        <h3>🤖 SONMART | Тестовый чат-бот</h3>
+        <p>Дизайн по бренду: #2196e0 / Inter / скругления 12px</p>
+    </div>
+
+    <div class="chat-widget">
+        <div class="chat-header">
+            <div class="chat-avatar">
+                🛏️
+            </div>
+            <div class="chat-title">
+                <h4>Помощник Sonmart</h4>
+                <span><i class="status-dot"></i> онлайн, готов подобрать</span>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <!-- Сообщения будут добавляться сюда -->
+        </div>
+
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Напишите сообщение..." disabled>
+            <button class="send-btn" id="sendBtn" disabled>➤</button>
+        </div>
+    </div>
+    <div class="demo-header" style="margin-top: 12px;">
+        <p>💡 <strong>Демо-сценарий:</strong> нажимайте кнопки — бот собирает параметры и показывает товары.</p>
+    </div>
+</div>
+
+<script>
+    // Состояние диалога
+    let state = {
+        step: 'greeting', // greeting, city, type, mattress_size, mattress_hardness, bed_size, bed_headboard, bed_material, bed_color, bed_lift, results
+        city: null,
+        type: null,
+        mattressSize: null,
+        mattressHardness: null,
+        bedParams: {}
+    };
+
+    const messagesContainer = document.getElementById('chatMessages');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // Функция добавления сообщения
+    function addMessage(sender, text, isHtml = false, buttons = null) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = sender === 'bot' ? 'message-bot' : 'message-user';
+
+        if (sender === 'bot') {
+            const iconDiv = document.createElement('div');
+            iconDiv.className = 'bot-icon';
+            iconDiv.innerText = '🤖';
+            messageDiv.appendChild(iconDiv);
+
+            const bubble = document.createElement('div');
+            bubble.className = 'bot-bubble';
+            if (isHtml) {
+                bubble.innerHTML = text;
+            } else {
+                bubble.innerText = text;
+            }
+
+            if (buttons && buttons.length) {
+                const buttonsDiv = document.createElement('div');
+                buttonsDiv.className = 'choice-buttons';
+                buttons.forEach(btn => {
+                    const btnEl = document.createElement('button');
+                    btnEl.className = 'choice-btn';
+                    btnEl.innerText = btn.label;
+                    btnEl.onclick = () => {
+                        if (btn.action) btn.action();
+                    };
+                    buttonsDiv.appendChild(btnEl);
+                });
+                bubble.appendChild(buttonsDiv);
+            }
+            messageDiv.appendChild(bubble);
+        } else {
+            const bubble = document.createElement('div');
+            bubble.className = 'user-bubble';
+            bubble.innerText = text;
+            messageDiv.appendChild(bubble);
+        }
+
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Имитация задержки бота
+    async function botReplyWithDelay(message, isHtml = false, buttons = null, delay = 500) {
+        showTyping();
+        await new Promise(resolve => setTimeout(resolve, delay));
+        removeTyping();
+        addMessage('bot', message, isHtml, buttons);
+    }
+
+    function showTyping() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message-bot';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = `
+            <div class="bot-icon">🤖</div>
+            <div class="bot-bubble typing">
+                <span></span><span></span><span></span>
+            </div>
+        `;
+        messagesContainer.appendChild(typingDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function removeTyping() {
+        const typing = document.getElementById('typingIndicator');
+        if (typing) typing.remove();
+    }
+
+    // Сброс/начало заново
+    function resetDialog() {
+        state = {
+            step: 'greeting',
+            city: null,
+            type: null,
+            mattressSize: null,
+            mattressHardness: null,
+            bedParams: {}
+        };
+        messagesContainer.innerHTML = '';
+        startDialog();
+    }
+
+    // Показать карточки товаров
+    function showProducts() {
+        let products = [];
+        if (state.type === 'mattress') {
+            products = [
+                { name: 'Ортопедический матрас «Sonmart Comfort»', params: `${state.mattressSize} см | Жёсткость: ${state.mattressHardness}`, price: '24 990 ₽' },
+                { name: 'Матрас «Sonmart Premium»', params: `${state.mattressSize} см | Жёсткость: средняя+`, price: '34 500 ₽' }
+            ];
+        } else {
+            products = [
+                { name: 'Кровать «Sonmart Elegance»', params: `Размер: ${state.bedParams.size || 'двуспальная'} | Материал: ${state.bedParams.material || 'массив'}`, price: '42 900 ₽' },
+                { name: 'Кровать «Sonmart Modern»', params: `Изголовье: ${state.bedParams.headboard || 'мягкое'} | Цвет: ${state.bedParams.color || 'бежевый'}`, price: '38 700 ₽' }
+            ];
+        }
+
+        let html = `<div><strong>Нашёл для вас в ${state.city || 'вашем городе'}:</strong></div>`;
+        products.forEach(p => {
+            html += `
+                <div class="product-card">
+                    <div class="product-img">🛏️</div>
+                    <div class="product-info">
+                        <div class="product-title">${p.name}</div>
+                        <div class="product-params">${p.params}</div>
+                        <div class="product-price">${p.price}</div>
+                        <div class="product-actions">
+                            <button class="btn-primary" onclick="alert('Переход на sonmart.ru/tovar')">Подробнее</button>
+                            <button class="btn-secondary" onclick="resetDialog()">Подобрать ещё</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        addMessage('bot', html, true);
+
+        // Отложенное предложение через 5 секунд (в демо — 5 сек, в реальности 5 мин)
+        setTimeout(() => {
+            addMessage('bot', '🎁 Специально для вас! Скидка 10% на ортопедические подушки при заказе матраса из подборки. Промокод: SLEEP10. Действует 24 часа.', false);
+        }, 5000);
+
+        state.step = 'results';
+    }
+
+    // Сценарий шагов
+    async function processStep() {
+        switch(state.step) {
+            case 'greeting':
+                await botReplyWithDelay('Здравствуйте! Я виртуальный помощник магазина Sonmart. Помогу подобрать кровать или матрас по вашим параметрам.', false, null, 300);
+                await botReplyWithDelay('В каком городе вы находитесь?', false, [
+                    { label: '📍 Москва', action: () => { state.city = 'Москва'; addMessage('user', 'Москва'); state.step = 'type'; processStep(); } },
+                    { label: '📍 Санкт-Петербург', action: () => { state.city = 'Санкт-Петербург'; addMessage('user', 'Санкт-Петербург'); state.step = 'type'; processStep(); } },
+                    { label: '📍 Казань', action: () => { state.city = 'Казань'; addMessage('user', 'Казань'); state.step = 'type'; processStep(); } },
+                    { label: '✏️ Другой город', action: () => {
+                        const city = prompt('Введите ваш город:');
+                        if(city) { state.city = city; addMessage('user', city); state.step = 'type'; processStep(); }
+                    }}
+                ]);
+                state.step = 'city';
+                break;
+
+            case 'type':
+                await botReplyWithDelay('Что вас интересует?', false, [
+                    { label: '🛏️ Матрас', action: () => { state.type = 'mattress'; addMessage('user', 'Матрас'); state.step = 'mattress_size'; processStep(); } },
+                    { label: '🛌 Кровать', action: () => { state.type = 'bed'; addMessage('user', 'Кровать'); state.step = 'bed_size'; processStep(); } },
+                    { label: '🤔 Пока не определился', action: () => { addMessage('user', 'Пока не определился'); botReplyWithDelay('Обычно начинают с матраса — от него зависит комфорт сна. Давайте подберём матрас?', false, [{ label: 'Да, матрас', action: () => { state.type = 'mattress'; addMessage('user', 'Матрас'); state.step = 'mattress_size'; processStep(); } }]); } }
+                ]);
+                break;
+
+            case 'mattress_size':
+                await botReplyWithDelay('Укажите нужный размер в сантиметрах (ширина × длина):', false, [
+                    { label: '90×200', action: () => { state.mattressSize = '90×200'; addMessage('user', '90×200'); state.step = 'mattress_hardness'; processStep(); } },
+                    { label: '160×200', action: () => { state.mattressSize = '160×200'; addMessage('user', '160×200'); state.step = 'mattress_hardness'; processStep(); } },
+                    { label: '180×200', action: () => { state.mattressSize = '180×200'; addMessage('user', '180×200'); state.step = 'mattress_hardness'; processStep(); } },
+                    { label: 'Ввести свой', action: () => { let s = prompt('Введите размер (пример: 140×200)'); if(s) { state.mattressSize = s; addMessage('user', s); state.step = 'mattress_hardness'; processStep(); } } }
+                ]);
+                break;
+
+            case 'mattress_hardness':
+                await botReplyWithDelay('Какая жёсткость вам подходит?', false, [
+                    { label: 'Очень мягкая', action: () => { state.mattressHardness = 'очень мягкая'; addMessage('user', 'Очень мягкая'); showProducts(); } },
+                    { label: 'Средняя 🔥', action: () => { state.mattressHardness = 'средняя'; addMessage('user', 'Средняя'); showProducts(); } },
+                    { label: 'Жёсткая', action: () => { state.mattressHardness = 'жёсткая'; addMessage('user', 'Жёсткая'); showProducts(); } },
+                    { label: 'Не знаю — посоветуйте', action: () => { state.mattressHardness = 'средняя'; addMessage('user', 'Посоветуйте'); botReplyWithDelay('Чаще всего выбирают среднюю жёсткость — универсальный вариант для здоровой спины.'); setTimeout(() => { showProducts(); }, 1000); } }
+                ]);
+                break;
+
+            // Кровать сценарий (упрощённо)
+            case 'bed_size':
+                await botReplyWithDelay('Какой размер кровати вам нужен?', false, [
+                    { label: 'Односпальная', action: () => { state.bedParams.size = 'односпальная'; addMessage('user', 'Односпальная'); state.step = 'bed_headboard'; processStep(); } },
+                    { label: 'Двуспальная', action: () => { state.bedParams.size = 'двуспальная'; addMessage('user', 'Двуспальная'); state.step = 'bed_headboard'; processStep(); } }
+                ]);
+                break;
+            case 'bed_headboard':
+                await botReplyWithDelay('Какое изголовье предпочитаете?', false, [
+                    { label: 'Мягкое', action: () => { state.bedParams.headboard = 'мягкое'; addMessage('user', 'Мягкое'); state.step = 'bed_material'; processStep(); } },
+                    { label: 'Твёрдое (дерево)', action: () => { state.bedParams.headboard = 'твёрдое'; addMessage('user', 'Твёрдое'); state.step = 'bed_material'; processStep(); } }
+                ]);
+                break;
+            case 'bed_material':
+                await botReplyWithDelay('Материал корпуса?', false, [
+                    { label: 'Массив дерева', action: () => { state.bedParams.material = 'массив'; addMessage('user', 'Массив дерева'); state.step = 'bed_color'; processStep(); } },
+                    { label: 'МДФ/ЛДСП', action: () => { state.bedParams.material = 'МДФ'; addMessage('user', 'МДФ'); state.step = 'bed_color'; processStep(); } }
+                ]);
+                break;
+            case 'bed_color':
+                await botReplyWithDelay('Выберите цвет:', false, [
+                    { label: 'Белый', action: () => { state.bedParams.color = 'белый'; addMessage('user', 'Белый'); showProducts(); } },
+                    { label: 'Венге', action: () => { state.bedParams.color = 'венге'; addMessage('user', 'Венге'); showProducts(); } }
+                ]);
+                break;
+        }
+    }
+
+    function startDialog() {
+        state.step = 'greeting';
+        processStep();
+    }
+
+    // Блокируем ввод текста (бот работает кнопками)
+    userInput.disabled = true;
+    sendBtn.disabled = true;
+
+    // Старт
+    startDialog();
+</script>
+</body>
+</html>
